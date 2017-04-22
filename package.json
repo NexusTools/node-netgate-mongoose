@@ -1,17 +1,25 @@
 {
-  "name": "netgate-mongoose",
+  "name": "nexusfork-mongoose",
   "version": "0.0.1",
-  "description": "Mongoose handler for netgate",
+  "description": "Mongoose handler for NexusFork",
   "main": "index.js",
   "dependencies": {
-    "async": "~1.3.0",
-    "lodash": "~3.10.0",
-    "mongoose": "~4.0.7",
-    "mongoose-cache": "~0.1.4",
-    "express": "~4.13.1"
+    "async": "^2.3.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.5",
+    "express": "^4.15.2",
+        
+    "ntypescript": "^1.201609302242.1",
+    "@types/mongoose": "^4.7.11",
+    "@types/lodash": "4.14.50",
+    "@types/async": "^2.0.40"
+  },
+  "devDependencies": {
+    "nulllogger": "^0.3.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "node node_modules/ntypescript/bin/tsc"
   },
   "author": "Katelyn Slater <ktaeyln@gmail.com>",
   "license": "LGPLv3"
