@@ -1,5 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 var zeropad = function (val) {
     val = val + "";
     if (val.length < 2)
@@ -94,9 +95,9 @@ module.exports = function mongodb(config, logger, next) {
                     delete layout.indexes;
                     delete layout.methods;
                     delete layout.statics;
-                    for (var key in layout) {
+                    for (var key0 in layout) {
                         try {
-                            var field = layout[key];
+                            var field = layout[key0];
                             if (!field.ref)
                                 throw "No ref";
                         }

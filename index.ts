@@ -1,6 +1,7 @@
 /// <reference path="./index.d.ts" />
 
 import mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 var zeropad = function(val) {
     val = val + "";
@@ -108,9 +109,9 @@ module.exports = function mongodb(config: any, logger: nulllogger.INullLogger, n
                     delete layout.methods;
                     delete layout.statics;
 
-                    for (var key in layout) {
+                    for (var key0 in layout) {
                         try {
-                            var field = layout[key];
+                            var field = layout[key0];
                             if (!field.ref)
                                 throw "No ref";
                         } catch (e) {
