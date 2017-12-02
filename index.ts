@@ -1,15 +1,9 @@
+/// <reference types="nulllogger" />
 /// <reference path="./index.d.ts" />
 
 import mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-var zeropad = function(val) {
-    val = val + "";
-    if (val.length < 2)
-        val = "0" + val;
-    return val;
-}
-import nulllogger = require("nulllogger");
 import async = require('async');
 import path = require('path');
 import _ = require('lodash');
@@ -19,7 +13,7 @@ var Schema = mongoose.Schema
     , ObjectId = mongoose.Types.ObjectId;
 
 var jsFile = /^(.+)\.js$/;
-module.exports = function mongodb(config: any, logger: nulllogger.INullLogger, next) {
+module.exports = function mongodb(app: any, config: any, logger: nulllogger.INullLogger, next) {
     var schemaBase = path.resolve(config.schemas);
     logger.debug("Loading Schemas", schemaBase);
 
@@ -48,34 +42,19 @@ module.exports = function mongodb(config: any, logger: nulllogger.INullLogger, n
                 user: config.user,
                 pass: config.pass
             }, function(err) {
-                logger.info("Connected to MongoDB!");
-
-                if(process.domain)
-                    process.domain['db'] = {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            
+                if (app)
+                    app.db = {
                         Models: Models,
                         Schemas: Schemas,
                         ObjectId: ObjectId,
                         Connection: conn
                     };
                 next(null, function mongodb(req, res, next) {
-                    req.formatDate = function(now) {
-                        var suffix;
-                        var hours = now.getHours();
-                        if (hours >= 12)
-                            suffix = "PM";
-                        else
-                            suffix = "AM";
-                        return zeropad(now.getMonth() + 1) + "/" + zeropad(now.getDay() + 1) + "/" + zeropad(now.getFullYear()) + " " + (hours % 12 || 12) + ":" + zeropad(now.getMinutes()) + " " + suffix;
-                    }
-                    req.currentDate = req.formatDate(new Date());
-
-                    if(process.domain)
-                        process.domain['db'] = {
-                            Models: Models,
-                            Schemas: Schemas,
-                            ObjectId: ObjectId,
-                            Connection: conn
-                        };
                     req.db = {
                         Models: Models,
                         Schemas: Schemas,

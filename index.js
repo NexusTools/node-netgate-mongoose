@@ -1,19 +1,16 @@
 "use strict";
+/// <reference types="nulllogger" />
+/// <reference path="./index.d.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-var zeropad = function (val) {
-    val = val + "";
-    if (val.length < 2)
-        val = "0" + val;
-    return val;
-};
 const async = require("async");
 const path = require("path");
 const _ = require("lodash");
 const fs = require("fs");
 var Schema = mongoose.Schema, ObjectId = mongoose.Types.ObjectId;
 var jsFile = /^(.+)\.js$/;
-module.exports = function mongodb(config, logger, next) {
+module.exports = function mongodb(app, config, logger, next) {
     var schemaBase = path.resolve(config.schemas);
     logger.debug("Loading Schemas", schemaBase);
     fs.readdir(schemaBase, function (err, files) {
@@ -39,32 +36,18 @@ module.exports = function mongodb(config, logger, next) {
                 user: config.user,
                 pass: config.pass
             }, function (err) {
-                logger.info("Connected to MongoDB!");
-                if (process.domain)
-                    process.domain['db'] = {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                if (app)
+                    app.db = {
                         Models: Models,
                         Schemas: Schemas,
                         ObjectId: ObjectId,
                         Connection: conn
                     };
                 next(null, function mongodb(req, res, next) {
-                    req.formatDate = function (now) {
-                        var suffix;
-                        var hours = now.getHours();
-                        if (hours >= 12)
-                            suffix = "PM";
-                        else
-                            suffix = "AM";
-                        return zeropad(now.getMonth() + 1) + "/" + zeropad(now.getDay() + 1) + "/" + zeropad(now.getFullYear()) + " " + (hours % 12 || 12) + ":" + zeropad(now.getMinutes()) + " " + suffix;
-                    };
-                    req.currentDate = req.formatDate(new Date());
-                    if (process.domain)
-                        process.domain['db'] = {
-                            Models: Models,
-                            Schemas: Schemas,
-                            ObjectId: ObjectId,
-                            Connection: conn
-                        };
                     req.db = {
                         Models: Models,
                         Schemas: Schemas,
@@ -109,7 +92,7 @@ module.exports = function mongodb(config, logger, next) {
                         field.ref = CollectionMap[field.ref];
                     }
                     var fields = [];
-                    var schema = Schemas[key] = new Schema(layout);
+                    var schema = Schemas[key] = new Schema(layout /*, {autoIndex: false}*/);
                     if (methods)
                         _.extend(schema.methods, methods);
                     if (statics)

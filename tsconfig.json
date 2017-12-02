@@ -1,12 +1,11 @@
 {
+    "compileOnSave": true,
     "compilerOptions": {
         "target": "ES6",
         "module": "commonjs",
-        "removeComments": true,
         "preserveConstEnums": true,
         "moduleResolution": "node",
-        "sourceMap": true,
-        "typeRoots": [ "node_modules/@types" ]
+        "sourceMap": true
     },
     "include": [
         "index.ts"

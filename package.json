@@ -1,21 +1,19 @@
 {
   "name": "nexusfork-mongoose",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Mongoose handler for NexusFork",
   "main": "index.js",
   "dependencies": {
-    "async": "^2.3.0",
+    "async": "^2.6.0",
     "lodash": "^4.17.4",
-    "mongoose": "^4.9.5",
-    "express": "^4.15.2"
+    "mongoose": "^4.13.5"
   },
   "devDependencies": {
-    "nulllogger": "^0.3.0",
-        
-    "ntypescript": "^1.201609302242.1",
-    "@types/mongoose": "^4.7.11",
-    "@types/lodash": "4.14.50",
-    "@types/async": "^2.0.40"
+    "nulllogger": "^0.5.2",
+    "@types/node": "^8.0.53",
+    "@types/mongoose": "^4.7.28",
+    "@types/lodash": "4.14.86",
+    "@types/async": "^2.0.45"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
