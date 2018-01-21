@@ -10,7 +10,7 @@ const _ = require("lodash");
 const fs = require("fs");
 var Schema = mongoose.Schema, ObjectId = mongoose.Types.ObjectId;
 var jsFile = /^(.+)\.js$/;
-module.exports = function mongodb(app, config, logger, next) {
+module.exports = function nexusfork_mongoose(app, config, logger, next) {
     var schemaBase = path.resolve(config.schemas);
     logger.debug("Loading Schemas", schemaBase);
     fs.readdir(schemaBase, function (err, files) {
@@ -33,6 +33,9 @@ module.exports = function mongodb(app, config, logger, next) {
             var Models = {}, CollectionMap = {};
             logger.info("Connecting to database", config.uri);
             var conn = mongoose.createConnection('mongodb://' + config.uri, {
+                reconnectTries: Number.MAX_VALUE,
+                reconnectInterval: 1000,
+                autoReconnect: true,
                 user: config.user,
                 pass: config.pass
             }, function (err) {
