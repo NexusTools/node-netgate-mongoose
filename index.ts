@@ -1,5 +1,5 @@
-/// <reference types="nulllogger" />
 /// <reference path="./index.d.ts" />
+/// <reference types="nulllogger" />
 
 import mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -110,7 +110,7 @@ module.exports = function mongodb(app: any, config: any, logger: nulllogger.INul
 
                     if (virtual)
                         for (var name in virtual) {
-                            var virt = schema.virtual(key + "." + name).get(virtual[name]);
+                            schema.virtual(name).get(virtual[name]);
                         }
                     _.keys(layout).forEach(function(field) {
                         var obj = layout[field];

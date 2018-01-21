@@ -1,8 +1,10 @@
 /node_modules
+/nbproject
 /coverage
 /test
 
 *~
 *.bak
+package-lock.json
 .travis.yml
 .gitignore

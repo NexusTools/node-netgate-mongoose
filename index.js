@@ -1,6 +1,6 @@
 "use strict";
-/// <reference types="nulllogger" />
 /// <reference path="./index.d.ts" />
+/// <reference types="nulllogger" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
@@ -99,7 +99,7 @@ module.exports = function mongodb(app, config, logger, next) {
                         _.extend(schema.statics, statics);
                     if (virtual)
                         for (var name in virtual) {
-                            var virt = schema.virtual(key + "." + name).get(virtual[name]);
+                            schema.virtual(name).get(virtual[name]);
                         }
                     _.keys(layout).forEach(function (field) {
                         var obj = layout[field];
